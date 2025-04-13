@@ -28,6 +28,7 @@ public class RoomProjection {
         room.roomId=roomCreatedEvent.getRoomId();
         room.roomCapacity=roomCreatedEvent.getRoomCapacity();
         room.roomNumber=roomCreatedEvent.getRoomNumber();
+        roomServicePanache.createRoom(room);
 
 
 

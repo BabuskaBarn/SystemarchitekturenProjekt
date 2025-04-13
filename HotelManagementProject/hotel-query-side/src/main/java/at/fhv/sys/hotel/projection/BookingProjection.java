@@ -28,6 +28,7 @@ public void processBookingCreatedEvent(BookingCreated bookingCreatedEvent){
     booking.toDate=bookingCreatedEvent.getToDate();
     booking.numberOfPersons=bookingCreatedEvent.getNumberOfPersons();
     booking.roomNumber=bookingCreatedEvent.getRoomNumber();
+    bookingServicePanache.createBooking(booking);
 
 }
 
