@@ -4,10 +4,10 @@ import java.util.UUID;
 
 public class RoomCreated {
 
-    private UUID roomId;
+    private Long roomId;
     private int roomCapacity;
     private int roomNumber;
-    public RoomCreated(UUID roomId, int roomCapacity, int roomNumber){
+    public RoomCreated(Long roomId, int roomCapacity, int roomNumber){
         this.roomId=roomId;
         this.roomCapacity=roomCapacity;
         this.roomNumber=roomNumber;
@@ -25,10 +25,10 @@ public class RoomCreated {
         public int getRoomCapacity(){
             return roomCapacity;
         }
-        public void setId(UUID id) {
+        public void setRoomId(Long id) {
             this.roomId = id;
         }
-        public UUID getId() {
+        public Long getRoomId() {
             return roomId;
         }
 }

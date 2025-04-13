@@ -14,13 +14,14 @@ public class CustomerAggregate {
     @Inject
     @RestClient
     EventBusClient eventClient;
-
+//TODO die handle methode und den controller nochmals anschauen ob String.valueOf richtig funktioniert und das der Long im Controller nicht stört
     public String handle(CreateCustomerCommand command) {
-        CustomerCreated event = new CustomerCreated(command.userId(), command.email());
+        CustomerCreated event= new CustomerCreated(command.userId(), command.email(),command.address());
+        //CustomerCreated event = new CustomerCreated(command.userId(), command.email());
 
         Logger.getAnonymousLogger().info(eventClient.processCustomerCreatedEvent(event).toString());
-
-        return command.userId();
+        //wir geben dem command einen Long dieser erwartet aber einen String;
+        return String.valueOf(command.userId());
     }
 
 }

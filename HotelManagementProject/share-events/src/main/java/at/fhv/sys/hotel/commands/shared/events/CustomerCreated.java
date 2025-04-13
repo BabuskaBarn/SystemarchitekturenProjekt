@@ -2,19 +2,19 @@ package at.fhv.sys.hotel.commands.shared.events;
 
 public class CustomerCreated {
 
-    private String userId;
+    private Long userId;
     private String email;
     private String address;
 
     public CustomerCreated() {}
 
-    public CustomerCreated(String userId, String email, String address) {
+    public CustomerCreated(Long userId, String email, String address) {
         this.userId = userId;
         this.email = email;
         this.address=address;
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
@@ -22,7 +22,7 @@ public class CustomerCreated {
         return email;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

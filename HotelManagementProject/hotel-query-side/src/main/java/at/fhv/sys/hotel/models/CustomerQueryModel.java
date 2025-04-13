@@ -4,20 +4,21 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 public class CustomerQueryModel {
 
     @Id
-    private String userId;
+    private Long userId;
     private String email;
-    private Date birthDate;
+    private LocalDate birthdate;
 
     private String address;
 
     public CustomerQueryModel() {}
 
-    public CustomerQueryModel(String userId, String email, String adress) {
+    public CustomerQueryModel(Long userId, String email, String adress) {
         this.userId = userId;
         this.email = email;
         this.address =adress;
@@ -33,7 +34,7 @@ public class CustomerQueryModel {
         return "Customer Email is: " + email;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

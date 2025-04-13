@@ -15,24 +15,24 @@ public class CustomerCommandController {
     public CustomerCommandController(CustomerAggregate customerAggregate) {
         this.customerAggregate = customerAggregate;
     }
-
+//TODO @QueryParam("customerId") Long customerId, eventuell auf String setzen
     @POST
     @Path("/createCustomer")
-    public String createCustomer(@QueryParam("customerId") String customerId, @QueryParam("name") String name, @QueryParam("email") String email, @QueryParam("address") String address) {
+    public String createCustomer(@QueryParam("customerId") Long customerId, @QueryParam("name") String name, @QueryParam("email") String email, @QueryParam("address") String address) {
         return customerAggregate.handle(new CreateCustomerCommand(customerId, name, email, address));
 
     }
 
     @POST
     @Path("/{customerId}/update")
-    public String updateCustomer(@PathParam("customerId") String customerId, @QueryParam("email") String email) {
+    public String updateCustomer(@PathParam("customerId") Long customerId, @QueryParam("email") String email) {
         // TBD: process customer
         return "Customer updated";
     }
 
     @POST
     @Path("/{customerId}/delete")
-    public String deleteCustomer(@PathParam("customerId") String customerId) {
+    public String deleteCustomer(@PathParam("customerId") Long customerId) {
         // TBD: delete customer
         return "Customer deleted";
     }
