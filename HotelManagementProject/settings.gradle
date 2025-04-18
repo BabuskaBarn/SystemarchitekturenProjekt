@@ -1,0 +1,5 @@
+rootProject.name = 'SystemarchitekturenProjekt'
+include 'hotel-command-side'
+include 'eventbus'
+include 'hotel-query-side'
+include 'share-events'

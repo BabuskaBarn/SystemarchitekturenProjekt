@@ -32,9 +32,6 @@ public class BookingQueryModel {
         this.roomNumber=roomNumber;
     }
 
-
-
-
     public void setBookingId(Long bookingId) {
         this.bookingId = bookingId;
     }

@@ -11,17 +11,22 @@ import java.util.logging.Logger;
 @ApplicationScoped
 public class CustomerAggregate {
 
+    private static final Logger logger = Logger.getLogger(CustomerAggregate.class.getName());
+
     @Inject
     @RestClient
     EventBusClient eventClient;
-//TODO die handle methode und den controller nochmals anschauen ob String.valueOf richtig funktioniert und das der Long im Controller nicht stört
+
     public String handle(CreateCustomerCommand command) {
-        CustomerCreated event= new CustomerCreated(command.userId(), command.email(),command.address());
-        //CustomerCreated event = new CustomerCreated(command.userId(), command.email());
+        CustomerCreated event = new CustomerCreated(
+                command.userId(),
+                command.email(),
+                command.address()
+        );
 
-        Logger.getAnonymousLogger().info(eventClient.processCustomerCreatedEvent(event).toString());
-        //wir geben dem command einen Long dieser erwartet aber einen String;
-        return String.valueOf(command.userId());
+        var response = eventClient.processCustomerCreatedEvent(event);
+        logger.info("Sent CustomerCreatedEvent: " + response.toString());
+
+        return "Customer created with ID: " + command.userId();
     }
-
 }
