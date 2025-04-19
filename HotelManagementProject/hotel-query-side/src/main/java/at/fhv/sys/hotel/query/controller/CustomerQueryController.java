@@ -1,12 +1,15 @@
 package at.fhv.sys.hotel.query.controller;
 
 import at.fhv.sys.hotel.commands.shared.events.CustomerCreated;
+import at.fhv.sys.hotel.models.CustomerQueryPanacheModel;
 import at.fhv.sys.hotel.projection.CustomerProjection;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.jboss.logmanager.Logger;
+
+import java.util.List;
 
 @Path("/api")
 @Produces(MediaType.APPLICATION_JSON)
@@ -25,5 +28,11 @@ public class CustomerQueryController {
         Logger.getAnonymousLogger().info("Received event: " + event);
         customerProjection.processCustomerCreatedEvent(event);
         return Response.ok(event).build();
+    }
+    @GET
+    @Path("/customers")
+    public Response getAllCustomers() {
+        List<CustomerQueryPanacheModel> customers = CustomerQueryPanacheModel.listAll();
+        return Response.ok(customers).build();
     }
 }

@@ -1,5 +1,6 @@
 package at.fhv.sys.eventbus.client;
 
+import at.fhv.sys.hotel.commands.shared.events.BookingCreated;
 import at.fhv.sys.hotel.commands.shared.events.CustomerCreated;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
@@ -16,4 +17,5 @@ public interface QueryClient {
     @Consumes(MediaType.APPLICATION_JSON)
     void forwardCustomerCreatedEvent(CustomerCreated event);
 
-   }
+    void forwardBookingCreatedEvent(BookingCreated bookingCreated);
+}
