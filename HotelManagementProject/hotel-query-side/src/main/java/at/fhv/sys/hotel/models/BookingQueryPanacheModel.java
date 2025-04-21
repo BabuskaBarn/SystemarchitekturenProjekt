@@ -11,4 +11,5 @@ public class BookingQueryPanacheModel extends PanacheEntity {
     public LocalDateTime toDate;
     public int numberOfPersons;
     public int roomNumber;
+    public String bookingReference;
 }

@@ -24,15 +24,20 @@ public class BookingQueryModel {
     private int numberOfPersons;
     private int roomNumber;
 
-    public BookingQueryModel(Long bookingId, LocalDateTime fromDate, LocalDateTime toDate, int numberOfPersons, int roomNumber){
+    private String bookingReference;
+
+    public BookingQueryModel(Long bookingId, LocalDateTime fromDate, LocalDateTime toDate, int numberOfPersons, int roomNumber, String bookingReference){
         this.bookingId=bookingId;
         this.fromDate=fromDate;
         this.toDate=toDate;
         this.numberOfPersons=numberOfPersons;
         this.roomNumber=roomNumber;
+        this.bookingReference=bookingReference;
     }
 
+    public BookingQueryModel() {
 
+    }
 
 
     public void setBookingId(Long bookingId) {

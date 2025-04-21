@@ -3,21 +3,26 @@ package at.fhv.sys.hotel.commands.shared.events;
 import java.time.LocalDateTime;
 
 public class BookingCreated {
+    private final Long customerId;
     private Long bookingId;
     private LocalDateTime fromDate;
 
     //@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime toDate;
 
+    private String bookingReference;
+
     private int numberOfPersons;
     private int roomNumber;
 
-    public BookingCreated(Long bookingId, LocalDateTime fromDate, LocalDateTime toDate, int numberOfPersons, int roomNumber){
+    public BookingCreated(Long bookingId, LocalDateTime fromDate, LocalDateTime toDate, int numberOfPersons, int roomNumber, String bookingReference, Long customerId){
         this.bookingId=bookingId;
         this.fromDate=fromDate;
         this.toDate=toDate;
         this.numberOfPersons=numberOfPersons;
         this.roomNumber=roomNumber;
+        this.bookingReference=bookingReference;
+        this.customerId=customerId;
 
     }
 
@@ -61,5 +66,8 @@ public class BookingCreated {
     }
     public void setNumberOfPersons(int num){
         this.numberOfPersons=num;
+    }
+    public String getBookingReference(){
+        return bookingReference;
     }
 }

@@ -21,13 +21,14 @@ public class BookingProjection {
 //TODO wir müssen den roomNumber noch richtig aus den Rooms extrahieren
 public void processBookingCreatedEvent(BookingCreated bookingCreatedEvent){
     Logger.getAnonymousLogger().info("Processing event: " + bookingCreatedEvent);
-    bookingService.createBooking(new BookingQueryModel(bookingCreatedEvent.getBookingId(),bookingCreatedEvent.getFromDate(),bookingCreatedEvent.getToDate(), bookingCreatedEvent.getNumberOfPersons(),bookingCreatedEvent.getRoomNumber()));
+    bookingService.createBooking(new BookingQueryModel(bookingCreatedEvent.getBookingId(),bookingCreatedEvent.getFromDate(),bookingCreatedEvent.getToDate(), bookingCreatedEvent.getNumberOfPersons(),bookingCreatedEvent.getRoomNumber(), bookingCreatedEvent.getBookingReference()));
     BookingQueryPanacheModel booking= new BookingQueryPanacheModel();
     booking.bookingId=bookingCreatedEvent.getBookingId();
     booking.fromDate=bookingCreatedEvent.getFromDate();
     booking.toDate=bookingCreatedEvent.getToDate();
     booking.numberOfPersons=bookingCreatedEvent.getNumberOfPersons();
     booking.roomNumber=bookingCreatedEvent.getRoomNumber();
+    booking.bookingReference=bookingCreatedEvent.getBookingReference();
     bookingServicePanache.createBooking(booking);
 
 }
