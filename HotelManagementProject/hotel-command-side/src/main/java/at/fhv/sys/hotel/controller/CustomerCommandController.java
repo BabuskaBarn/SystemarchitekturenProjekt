@@ -15,6 +15,7 @@ public class CustomerCommandController {
     public CustomerCommandController(CustomerAggregate customerAggregate) {
         this.customerAggregate = customerAggregate;
     }
+
 //TODO @QueryParam("customerId") Long customerId, eventuell auf String setzen
     @POST
     @Path("/createCustomer")
