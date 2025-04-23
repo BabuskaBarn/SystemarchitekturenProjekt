@@ -6,6 +6,17 @@ plugins {
 repositories {
     mavenCentral()
     mavenLocal()
+
+   /* maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/EventStore/EventStoreDB-Client-Java")
+        credentials {
+            username = username //project.findProperty("gpr.user") ?: System.getenv("GPR_USER")
+            password = "github_pat  _11BHTI22A0I2WbEjvga311_O4eq08h272j6RSVm93USaikewu3xRFwnIxWvEfpNUCpJSFGC3JECfY0g9b9"//project.findProperty("gpr.key") ?: System.getenv("GPR_KEY")
+        }
+    }
+
+    */
 }
 
 dependencies {
@@ -20,6 +31,8 @@ dependencies {
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
     implementation project(':share-events')
+   implementation 'com.eventstore:eventstore-client-java:5.3.0'
+
 }
 
 group 'at.fhv.sys'
