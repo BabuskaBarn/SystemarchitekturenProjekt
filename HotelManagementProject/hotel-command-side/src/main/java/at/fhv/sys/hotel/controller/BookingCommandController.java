@@ -1,6 +1,7 @@
 package at.fhv.sys.hotel.controller;
 
 import at.fhv.sys.hotel.commands.BookingAggregate;
+import at.fhv.sys.hotel.commands.CancelBookingCommand;
 import at.fhv.sys.hotel.commands.CreateBookingCommand;
 import at.fhv.sys.hotel.commands.CreateCustomerCommand;
 import jakarta.ws.rs.*;
@@ -38,7 +39,7 @@ public class BookingCommandController {
 
     @POST
     @Path(("/cancelBooking"))
-    public String cancelBooking(){return null;}
+    public String cancelBooking(CancelBookingCommand command){return bookingAggregate.handle(command);}
 
     @POST
     @Path(("/payBooking"))

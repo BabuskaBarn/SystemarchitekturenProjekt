@@ -1,9 +1,10 @@
 package at.fhv.sys.eventbus.services;
-import com.eventstore.dbclient.*;
+
 import at.fhv.sys.eventbus.client.QueryClient;
 import at.fhv.sys.hotel.commands.shared.events.BookingCreated;
 import at.fhv.sys.hotel.commands.shared.events.CustomerCreated;
 import at.fhv.sys.hotel.commands.shared.events.RoomCreated;
+import com.eventstore.dbclient.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

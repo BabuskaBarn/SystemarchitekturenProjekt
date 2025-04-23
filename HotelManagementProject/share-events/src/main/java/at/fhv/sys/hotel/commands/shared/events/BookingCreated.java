@@ -1,5 +1,7 @@
 package at.fhv.sys.hotel.commands.shared.events;
 
+import at.fhv.sys.hotel.commands.shared.events.Enums.BookingState;
+
 import java.time.LocalDateTime;
 
 public class BookingCreated {
@@ -11,6 +13,7 @@ public class BookingCreated {
 
     private int numberOfPersons;
     private int roomNumber;
+    private BookingState state;
 
     public BookingCreated(Long bookingId, LocalDateTime fromDate, LocalDateTime toDate, int numberOfPersons, int roomNumber){
         this.bookingId=bookingId;
@@ -18,6 +21,9 @@ public class BookingCreated {
         this.toDate=toDate;
         this.numberOfPersons=numberOfPersons;
         this.roomNumber=roomNumber;
+        this.state=BookingState.Open;
+
+
 
     }
 

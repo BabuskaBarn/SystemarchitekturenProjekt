@@ -6,6 +6,8 @@ import at.fhv.sys.hotel.commands.shared.events.RoomCreated;
 import at.fhv.sys.hotel.projection.BookingProjection;
 import at.fhv.sys.hotel.projection.CustomerProjection;
 import at.fhv.sys.hotel.projection.RoomProjection;
+
+import com.eventstore.dbclient.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.annotation.PostConstruct;
