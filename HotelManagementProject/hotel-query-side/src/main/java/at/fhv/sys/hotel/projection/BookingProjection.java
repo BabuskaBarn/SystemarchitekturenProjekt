@@ -18,6 +18,8 @@ public class BookingProjection {
 
 @Inject
     BookingServicePanache bookingServicePanache;
+
+    public BookingProjection() {}
 //TODO wir müssen den roomNumber noch richtig aus den Rooms extrahieren
 public void processBookingCreatedEvent(BookingCreated bookingCreatedEvent){
     Logger.getAnonymousLogger().info("Processing event: " + bookingCreatedEvent);

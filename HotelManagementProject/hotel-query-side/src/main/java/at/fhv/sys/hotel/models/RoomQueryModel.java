@@ -26,7 +26,9 @@ public class RoomQueryModel {
 
     }
 
+    public RoomQueryModel() {
 
+    }
 
 
     public void setRoomNumber(int num){

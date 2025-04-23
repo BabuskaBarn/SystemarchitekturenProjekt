@@ -5,8 +5,7 @@ import io.quarkus.runtime.StartupEvent;
 import io.quarkus.runtime.annotations.QuarkusMain;
 import jakarta.enterprise.event.Observes;
 import org.jboss.logging.Logger;
-
-@QuarkusMain
+@QuarkusMain(name = "command-app")
 public class HotelCommandSideApplication {
     void onStart(@Observes StartupEvent ev) {
         Logger.getLogger(HotelCommandSideApplication.class).info("Starting Hotel Command Side Application");

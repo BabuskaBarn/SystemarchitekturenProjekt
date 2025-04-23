@@ -3,6 +3,7 @@ package at.fhv.sys.hotel.Service;
 import at.fhv.sys.hotel.commands.shared.events.BookingCreated;
 import at.fhv.sys.hotel.commands.shared.events.CustomerCreated;
 import at.fhv.sys.hotel.commands.shared.events.RoomCreated;
+
 import at.fhv.sys.hotel.projection.BookingProjection;
 import at.fhv.sys.hotel.projection.CustomerProjection;
 import at.fhv.sys.hotel.projection.RoomProjection;
@@ -25,7 +26,7 @@ public class EventReplayService {
     @Inject
     RoomProjection roomProjection;
     @Inject
-    BookingProjection bookingProjection;
+        BookingProjection bookingProjection;
 
 
     private final ObjectMapper objectMapper;

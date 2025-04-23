@@ -1,6 +1,7 @@
 package at.fhv.sys.eventbus.services;
 
 import at.fhv.sys.eventbus.client.QueryClient;
+import at.fhv.sys.hotel.commands.shared.events.BookingCancelled;
 import at.fhv.sys.hotel.commands.shared.events.BookingCreated;
 import at.fhv.sys.hotel.commands.shared.events.CustomerCreated;
 import at.fhv.sys.hotel.commands.shared.events.RoomCreated;
@@ -40,6 +41,9 @@ public class EventProcessingService  {
                 queryClient.forwardRoomCreatedEvent(roomCreated);
             } else if (eventObject instanceof BookingCreated bookingCreated) {
                 queryClient.forwardBookingCreatedEvent(bookingCreated);
+            } else if (eventObject instanceof BookingCancelled bookingCancelled) {
+                queryClient.forwardBookingCancelledEvent(bookingCancelled);
+
             }
 
         } catch (Exception e) {

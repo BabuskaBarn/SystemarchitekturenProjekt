@@ -1,0 +1,15 @@
+services:
+  eventstore:
+    image: eventstore/eventstore:latest
+    container_name: eventstore
+    ports:
+      - "2113:2113"   # Web UI
+      - "1113:1113"   # gRPC TCP
+    environment:
+      - EVENTSTORE_INSECURE=true
+      - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
+      - EVENTSTORE_RUN_PROJECTIONS=All
+      - EVENTSTORE_START_STANDARD_PROJECTIONS=true
+    volumes:
+      - ./eventstore-data:/var/lib/eventstore
+    restart: always

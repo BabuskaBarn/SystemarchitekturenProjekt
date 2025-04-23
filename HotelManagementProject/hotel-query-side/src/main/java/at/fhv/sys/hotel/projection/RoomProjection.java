@@ -20,6 +20,8 @@ public class RoomProjection {
     @Inject
     RoomServicePanache roomServicePanache;
 
+    public RoomProjection() {}
+
     public void processRoomCreatedEvent(RoomCreated roomCreatedEvent){
         Logger.getAnonymousLogger().info("Processing event: " + roomCreatedEvent);
         roomService.createRoom(new RoomQueryModel(roomCreatedEvent.getRoomId(), roomCreatedEvent.getRoomCapacity(), roomCreatedEvent.getRoomNumber()));

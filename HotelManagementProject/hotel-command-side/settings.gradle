@@ -10,6 +10,8 @@ pluginManagement {
 }
 
 include 'share-events'
+include 'hotel-query-side'
 project(':share-events').projectDir = file('../share-events')
+project(':hotel-query-side').projectDir=file('../hotel-query-side')
 
 rootProject.name = 'hotel-command-side'

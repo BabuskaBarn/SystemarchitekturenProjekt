@@ -6,7 +6,7 @@ import io.quarkus.runtime.annotations.QuarkusMain;
 import jakarta.enterprise.event.Observes;
 import org.jboss.logging.Logger;
 
-@QuarkusMain
+@QuarkusMain(name = "query-app")
 public class HotelQuerySideApplication {
     void onStart(@Observes StartupEvent ev) {
         Logger.getLogger(HotelQuerySideApplication.class).info("Starting Hotel Query Side Application");
