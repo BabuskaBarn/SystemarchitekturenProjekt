@@ -10,6 +10,7 @@ public class CustomerQueryPanacheModel extends PanacheEntity {
     public Long userId;
     public String email;
     public String address;
+    public String name;
 
 
 }

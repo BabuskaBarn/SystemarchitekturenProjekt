@@ -13,13 +13,15 @@ public class CustomerQueryModel {
     private Long userId;
     private String email;
     private LocalDate birthdate;
+    private String name;
 
     private String address;
 
     public CustomerQueryModel() {}
 
-    public CustomerQueryModel(Long userId, String email, String adress) {
+    public CustomerQueryModel(Long userId, String name, String email, String adress) {
         this.userId = userId;
+        this.name=name;
         this.email = email;
         this.address =adress;
     }
@@ -40,5 +42,9 @@ public class CustomerQueryModel {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getName() {
+        return name;
     }
 }

@@ -28,7 +28,7 @@ public interface EventBusClient {
     BookingCreated processBookingCreatedEvent(BookingCreated event);
 
     @POST
-    @Path("/bookingCreated")
+    @Path("/roomCreated")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     BookingCreated processRoomCreatedEvent(RoomCreated event);

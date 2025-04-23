@@ -5,11 +5,13 @@ public class CustomerCreated {
     private Long userId;
     private String email;
     private String address;
+    private String name;
 
     public CustomerCreated() {}
 
-    public CustomerCreated(Long userId, String email, String address) {
+    public CustomerCreated(Long userId, String name, String email, String address) {
         this.userId = userId;
+        this.name=name;
         this.email = email;
         this.address=address;
     }
@@ -31,6 +33,10 @@ public class CustomerCreated {
     }
     public String getAddress() {
         return address;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override
