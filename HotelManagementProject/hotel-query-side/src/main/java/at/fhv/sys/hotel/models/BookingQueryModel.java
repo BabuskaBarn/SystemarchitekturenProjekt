@@ -15,10 +15,10 @@ public class BookingQueryModel {
     @Id
     private Long bookingId;
 
-   // @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime fromDate;
 
-    //@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime toDate;
 
     private int numberOfPersons;

@@ -7,7 +7,10 @@ import at.fhv.sys.hotel.service.BookingService;
 import at.fhv.sys.hotel.service.BookingServicePanache;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.logging.Logger;
 
 @ApplicationScoped
@@ -33,6 +36,8 @@ public void processBookingCreatedEvent(BookingCreated bookingCreatedEvent){
     bookingServicePanache.createBooking(booking);
 
 }
+
+
 
 
 
