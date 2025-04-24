@@ -1,11 +1,9 @@
 package at.fhv.sys.hotel.models;
 
 import at.fhv.sys.hotel.commands.shared.events.BookingCreated;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import at.fhv.sys.hotel.commands.shared.events.Enums.BookingState;
+import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 
 
 import java.time.LocalDateTime;
@@ -23,6 +21,11 @@ public class BookingQueryModel {
 
     private int numberOfPersons;
     private int roomNumber;
+    @Enumerated(EnumType.STRING) // Stores the enum as a string in DB
+    private BookingState state = BookingState.Open; // Default value
+
+
+
 
     public BookingQueryModel(Long bookingId, LocalDateTime fromDate, LocalDateTime toDate, int numberOfPersons, int roomNumber){
         this.bookingId=bookingId;
@@ -30,6 +33,7 @@ public class BookingQueryModel {
         this.toDate=toDate;
         this.numberOfPersons=numberOfPersons;
         this.roomNumber=roomNumber;
+        this.state = BookingState.Open;
     }
 
     public BookingQueryModel() {
@@ -73,5 +77,13 @@ public class BookingQueryModel {
     }
     public void setNumberOfPersons(int num){
         this.numberOfPersons=num;
+    }
+
+    public BookingState getState() {
+        return state;
+    }
+
+    public void setState(BookingState state) {
+        this.state = state;
     }
 }

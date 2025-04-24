@@ -1,9 +1,9 @@
 package at.fhv.sys.hotel.Service;
 
+
 import at.fhv.sys.hotel.commands.shared.events.BookingCreated;
 import at.fhv.sys.hotel.commands.shared.events.CustomerCreated;
 import at.fhv.sys.hotel.commands.shared.events.RoomCreated;
-
 import at.fhv.sys.hotel.projection.BookingProjection;
 import at.fhv.sys.hotel.projection.CustomerProjection;
 import at.fhv.sys.hotel.projection.RoomProjection;
@@ -26,7 +26,7 @@ public class EventReplayService {
     @Inject
     RoomProjection roomProjection;
     @Inject
-        BookingProjection bookingProjection;
+    BookingProjection bookingProjection;
 
 
     private final ObjectMapper objectMapper;
@@ -87,3 +87,137 @@ public class EventReplayService {
         }
     }
 }
+/*
+import at.fhv.sys.hotel.commands.shared.events.BookingCreated;
+import at.fhv.sys.hotel.commands.shared.events.CustomerCreated;
+import at.fhv.sys.hotel.commands.shared.events.RoomCreated;
+
+import at.fhv.sys.hotel.projection.BookingProjection;
+import at.fhv.sys.hotel.projection.CustomerProjection;
+import at.fhv.sys.hotel.projection.RoomProjection;
+import com.eventstore.dbclient.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+
+
+
+import com.fasterxml.jackson.databind.SerializationFeature;
+
+import io.quarkus.runtime.StartupEvent;
+
+import jakarta.enterprise.event.Observes;
+import org.jboss.logging.Logger;
+
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+
+
+@ApplicationScoped
+public class EventReplayService {
+
+
+    private static final Logger LOG = Logger.getLogger(EventReplayService.class);
+    private static final int READ_BATCH_SIZE = 100;
+
+    @Inject
+    CustomerProjection customerProjection;
+
+    @Inject
+    RoomProjection roomProjection;
+
+    @Inject
+    BookingProjection bookingProjection;
+
+    private final ObjectMapper objectMapper;
+    private EventStoreDBClient client;
+
+    public EventReplayService() {
+        this.objectMapper = new ObjectMapper();
+        this.objectMapper.registerModule(new JavaTimeModule());
+    }
+
+    public void onStart(@Observes StartupEvent ev) {
+        try {
+            this.client = EventStoreDBClient.create(
+                    EventStoreDBConnectionString.parseOrThrow("esdb://localhost:2113?tls=false"));
+
+            replayAllEvents();
+        } catch (Exception e) {
+            LOG.error("Failed to initialize EventReplayService", e);
+            throw new RuntimeException("Event replay initialization failed", e);
+        }
+    }
+
+    @Transactional
+    public void replayAllEvents() {
+        try {
+            // CORRECTED: Using the proper start position
+            Position position = new Position(0,0);// or whichever works
+            boolean hasMore = true;
+
+            while (hasMore) {
+                ReadAllOptions options = ReadAllOptions.get()
+                        .forwards()
+                        .fromPosition(position)
+                        .maxCount(READ_BATCH_SIZE);
+
+                ReadResult result = client.readAll(options).get();
+                List<ResolvedEvent> events = result.getEvents();
+
+                if (events.isEmpty()) {
+                    hasMore = false;
+                    continue;
+                }
+
+                for (ResolvedEvent event : events) {
+                    processEvent(event);
+                }
+
+                // Get position from last event
+                position = events.get(events.size()-1).getOriginalEvent().getPosition();
+
+                LOG.infof("Processed %d events, new position: %s",
+                        events.size(), position);
+            }
+        } catch (Exception e) {
+            LOG.error("Event replay failed", e);
+            throw new RuntimeException("Event replay failed", e);
+        }
+    }
+
+    @Transactional
+    public void processEvent(ResolvedEvent event) {
+        String eventType = event.getOriginalEvent().getEventType();
+        String eventData = new String(event.getOriginalEvent().getEventData(), StandardCharsets.UTF_8);
+        LOG.infof("Processing event: %s", eventType);
+
+        try {
+            switch (eventType) {
+                case "CustomerCreated":
+                    CustomerCreated customer = objectMapper.readValue(eventData, CustomerCreated.class);
+                    customerProjection.processCustomerCreatedEvent(customer);
+                    break;
+                case "RoomCreated":
+                    RoomCreated room = objectMapper.readValue(eventData, RoomCreated.class);
+                    roomProjection.processRoomCreatedEvent(room);
+                    break;
+                case "BookingCreated":
+                    BookingCreated booking = objectMapper.readValue(eventData, BookingCreated.class);
+                    bookingProjection.processBookingCreatedEvent(booking);
+                    break;
+                default:
+                    LOG.warnf("Unknown event type: %s", eventType);
+            }
+        } catch (Exception e) {
+            LOG.errorf("Failed to process event %s: %s", eventType, e.getMessage());
+            throw new RuntimeException("Event processing failed", e);
+        }
+    }
+}
+
+ */

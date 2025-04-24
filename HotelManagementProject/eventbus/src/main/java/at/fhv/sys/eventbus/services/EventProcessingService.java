@@ -38,7 +38,7 @@ public class EventProcessingService {
             throw new RuntimeException("Event processing failed", e);
         }
     }
-//TODO Booking
+
     private void forwardToQueryService(Object event) {
         try {
             if (event instanceof CustomerCreated evt) {
@@ -47,8 +47,11 @@ public class EventProcessingService {
                 queryClient.forwardRoomCreatedEvent(evt);
             }else if (event instanceof BookingCreated evt) {
                 queryClient.forwardBookingCreatedEvent(evt);
-
+            } else if (event instanceof BookingCancelled evt) {
+                queryClient.forwardBookingCancelledEvent(evt);
             }
+
+
             // Add other event types as needed
         } catch (Exception e) {
             throw new RuntimeException("Failed to forward event to query service", e);

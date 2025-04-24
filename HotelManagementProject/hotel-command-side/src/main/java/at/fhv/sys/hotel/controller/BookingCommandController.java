@@ -84,7 +84,7 @@ public class BookingCommandController {
 
 
     @POST
-    @Path(("/cancelBooking"))
+    @Path(("/bookingCancelled"))
     @Operation(
             summary = "Cancel an existing booking",
             description = "Cancels a hotel booking using a provided booking ID or cancellation command."

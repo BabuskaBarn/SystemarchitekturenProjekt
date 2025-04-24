@@ -2,19 +2,30 @@ package at.fhv.sys.hotel.commands.shared.events;
 
 
 import at.fhv.sys.hotel.commands.shared.events.Enums.BookingState;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 public class BookingCancelled {
-    private final Long bookingId;
-    private final BookingState state;
+
+
+    private Long bookingId;
+
+
+
+    private BookingState state;
 
     // Konstruktor
-    public BookingCancelled(Long bookingId) {
+    @JsonCreator // Für Jackson, um das Objekt zu deserialisieren
+    public BookingCancelled(@JsonProperty("bookingId") Long bookingId) {
         this.bookingId = bookingId;
-        this.state = BookingState.Cancelled;
+        this.state = BookingState.Cancelled; // Zustand wird hier festgelegt
     }
 
 
-    // Getter für die Buchungs-ID
+
+
+
     public Long getBookingId() {
         return bookingId;
     }

@@ -1,19 +1,29 @@
 package at.fhv.sys.hotel.commands.shared.events;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class CustomerCreated {
 
     private Long userId;
+
+    private String name;
     private String email;
     private String address;
-    private String name;
+
 
     public CustomerCreated() {}
 
-    public CustomerCreated(Long userId, String name, String email, String address) {
+    @JsonCreator
+    public CustomerCreated(
+            @JsonProperty("userId") Long userId,
+            @JsonProperty("email") String email,
+            @JsonProperty("address") String address,
+            @JsonProperty("name") String name) {
         this.userId = userId;
-        this.name=name;
         this.email = email;
-        this.address=address;
+        this.address = address;
+        this.name = name;
     }
 
     public Long getUserId() {
@@ -24,13 +34,7 @@ public class CustomerCreated {
         return email;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
     public String getAddress() {
         return address;
     }
@@ -38,6 +42,8 @@ public class CustomerCreated {
     public String getName() {
         return name;
     }
+
+
 
     @Override
     public String toString() {

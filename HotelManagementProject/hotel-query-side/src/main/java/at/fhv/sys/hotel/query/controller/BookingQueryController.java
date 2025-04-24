@@ -1,5 +1,6 @@
 package at.fhv.sys.hotel.query.controller;
 
+import at.fhv.sys.hotel.commands.shared.events.BookingCancelled;
 import at.fhv.sys.hotel.commands.shared.events.BookingCreated;
 
 import at.fhv.sys.hotel.models.BookingQueryModel;
@@ -84,5 +85,13 @@ public class BookingQueryController {
                     .entity("Error fetching bookings")
                     .build();
         }
+    }
+
+    @POST
+    @Path("/bookingCancelled")
+    public Response bookingCancelled(BookingCancelled event) {
+        LOG.infof("Received booking cancelled event: %s", event);
+        bookingProjection.processBookingCancelledEvent(event);
+        return Response.ok(event).build();
     }
 }

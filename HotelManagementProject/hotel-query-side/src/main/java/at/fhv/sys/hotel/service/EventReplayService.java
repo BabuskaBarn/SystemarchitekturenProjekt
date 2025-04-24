@@ -1,12 +1,12 @@
 package at.fhv.sys.hotel.service;
 
+
 import at.fhv.sys.hotel.commands.shared.events.BookingCreated;
 import at.fhv.sys.hotel.commands.shared.events.CustomerCreated;
 import at.fhv.sys.hotel.commands.shared.events.RoomCreated;
 import at.fhv.sys.hotel.projection.BookingProjection;
 import at.fhv.sys.hotel.projection.CustomerProjection;
 import at.fhv.sys.hotel.projection.RoomProjection;
-
 import com.eventstore.dbclient.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -87,3 +87,139 @@ public class EventReplayService {
         }
     }
 }
+/*
+import at.fhv.sys.hotel.commands.shared.events.BookingCreated;
+
+import at.fhv.sys.hotel.commands.shared.events.CustomerCreated;
+import at.fhv.sys.hotel.commands.shared.events.RoomCreated;
+import at.fhv.sys.hotel.projection.BookingProjection;
+import at.fhv.sys.hotel.projection.CustomerProjection;
+import at.fhv.sys.hotel.projection.RoomProjection;
+
+import com.eventstore.dbclient.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.quarkus.runtime.StartupEvent;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.event.Observes;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import org.jboss.logging.Logger;
+
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+
+@ApplicationScoped
+public class EventReplayService {
+
+
+    private static final Logger LOG = Logger.getLogger(EventReplayService.class);
+    private static final int READ_BATCH_SIZE = 100;
+
+    @Inject
+    CustomerProjection customerProjection;
+
+    @Inject
+    RoomProjection roomProjection;
+
+    @Inject
+    BookingProjection bookingProjection;
+
+    ;@Inject
+    ObjectMapper objectMapper;
+    private EventStoreDBClient client;
+
+    public EventReplayService() {
+
+    }
+
+    public void onStart(@Observes StartupEvent ev) {
+        try {
+            this.client = EventStoreDBClient.create(
+                    EventStoreDBConnectionString.parseOrThrow("esdb://localhost:2113?tls=false"));
+
+            replayAllEvents();
+        } catch (Exception e) {
+            LOG.error("Failed to initialize EventReplayService", e);
+            throw new RuntimeException("Event replay initialization failed", e);
+        }
+    }
+
+    @Transactional
+    public void replayAllEvents() {
+        try {
+            // CORRECTED: Using the proper start position
+            Position position = new Position(0,0);// or whichever works
+            boolean hasMore = true;
+
+            while (hasMore) {
+                ReadAllOptions options = ReadAllOptions.get()
+                        .forwards()
+                        .fromPosition(position)
+                        .maxCount(READ_BATCH_SIZE);
+
+                ReadResult result = client.readAll(options).get();
+                List<ResolvedEvent> events = result.getEvents();
+
+                if (events.isEmpty()) {
+                    hasMore = false;
+                    continue;
+                }
+
+                for (ResolvedEvent event : events) {
+                    processEvent(event);
+                }
+
+                // Get position from last event
+                position = events.get(events.size()-1).getOriginalEvent().getPosition();
+
+                LOG.infof("Processed %d events, new position: %s",
+                        events.size(), position);
+            }
+        } catch (Exception e) {
+            LOG.error("Event replay failed", e);
+            throw new RuntimeException("Event replay failed", e);
+        }
+    }
+
+    @Transactional
+    public void processEvent(ResolvedEvent event) {
+        String eventType = event.getOriginalEvent().getEventType();
+        byte[] eventData = event.getOriginalEvent().getEventData();
+
+        try {
+            // Debug logging to see raw JSON
+            String json = new String(eventData, StandardCharsets.UTF_8);
+            LOG.debugf("Processing event %s with data: %s", eventType, json);
+
+            // First parse to JsonNode to ensure proper JSON parsing
+            JsonNode jsonNode = objectMapper.readTree(json);
+
+            switch (eventType) {
+                case "CustomerCreated":
+                    // Use treeToValue for more reliable deserialization
+                    CustomerCreated customer = objectMapper.treeToValue(jsonNode, CustomerCreated.class);
+                    customerProjection.processCustomerCreatedEvent(customer);
+                    break;
+                case "RoomCreated":
+                    RoomCreated room = objectMapper.treeToValue(jsonNode, RoomCreated.class);
+                    roomProjection.processRoomCreatedEvent(room);
+                    break;
+                case "BookingCreated":
+                    BookingCreated booking = objectMapper.treeToValue(jsonNode, BookingCreated.class);
+                    bookingProjection.processBookingCreatedEvent(booking);
+                    break;
+                default:
+                    LOG.warnf("Unknown event type: %s", eventType);
+            }
+        } catch (Exception e) {
+            LOG.errorf("Failed to process event %s. Error: %s", eventType, e.getMessage());
+            throw new RuntimeException("Event processing failed", e);
+        }
+    }
+}
+
+ */
+
