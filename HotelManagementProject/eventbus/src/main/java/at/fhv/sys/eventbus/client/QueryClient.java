@@ -11,7 +11,7 @@ import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 @RegisterRestClient(configKey="hotel-query-api-client")
-@Path("/api")
+@Path("/api/query")
 public interface QueryClient {
 
     @POST
@@ -25,9 +25,9 @@ public interface QueryClient {
     BookingCreated forwardBookingCreatedEvent(BookingCreated event);
 
     @POST
-    @Path("/bookingCreated")
+    @Path("/roomCreated")
     @Consumes(MediaType.APPLICATION_JSON)
-    BookingCreated forwardRoomCreatedEvent(RoomCreated event);
+    RoomCreated forwardRoomCreatedEvent(RoomCreated event);
 
     @POST
     @Path("/bookingCancelled")

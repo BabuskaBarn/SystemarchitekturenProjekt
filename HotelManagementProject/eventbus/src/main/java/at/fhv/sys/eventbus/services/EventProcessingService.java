@@ -38,7 +38,7 @@ public class EventProcessingService {
             throw new RuntimeException("Event processing failed", e);
         }
     }
-
+//TODO Booking
     private void forwardToQueryService(Object event) {
         try {
             if (event instanceof CustomerCreated evt) {

@@ -14,7 +14,7 @@ import org.jboss.logging.annotations.Pos;
 
 import java.time.LocalDateTime;
 
-@Path("/api")
+@Path("/api/commands")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Booking Commands", description = "Command-side operations for bookings")

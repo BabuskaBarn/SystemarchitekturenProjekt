@@ -8,7 +8,7 @@ import jakarta.ws.rs.core.Response;
 
 import java.util.UUID;
 
-@Path("/api")
+@Path("/api/commands")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class CustomerCommandController {

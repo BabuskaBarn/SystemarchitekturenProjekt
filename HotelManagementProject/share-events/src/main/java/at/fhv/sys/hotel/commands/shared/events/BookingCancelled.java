@@ -13,6 +13,7 @@ public class BookingCancelled {
         this.state = BookingState.Cancelled;
     }
 
+
     // Getter für die Buchungs-ID
     public Long getBookingId() {
         return bookingId;

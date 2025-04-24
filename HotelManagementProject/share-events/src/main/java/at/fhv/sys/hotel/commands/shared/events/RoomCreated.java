@@ -12,6 +12,7 @@ public class RoomCreated {
         this.roomCapacity=roomCapacity;
         this.roomNumber=roomNumber;
     }
+    public RoomCreated() {}
 
         public void setRoomNumber(int num){
             this.roomNumber=num;

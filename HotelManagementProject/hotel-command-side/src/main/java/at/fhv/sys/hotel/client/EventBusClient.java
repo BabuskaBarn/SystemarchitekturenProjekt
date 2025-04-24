@@ -12,7 +12,7 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import jakarta.ws.rs.Path;
 
 @RegisterRestClient(configKey="hotel-eventbus-api-client")
-@Path("/api")
+@Path("/api/commands")
 public interface EventBusClient {
 
     @POST
@@ -27,15 +27,17 @@ public interface EventBusClient {
     @Produces(MediaType.APPLICATION_JSON)
     BookingCreated processBookingCreatedEvent(BookingCreated event);
 
-    @POST
-    @Path("/roomCreated")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    BookingCreated processRoomCreatedEvent(RoomCreated event);
+
 
     @POST
     @Path("/bookingCancelled")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    BookingCreated processBookingCancelledEvent(BookingCancelled event);
+    BookingCancelled processBookingCancelledEvent(BookingCancelled event);
+
+    @POST
+    @Path("/roomCreated")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    RoomCreated processRoomCreatedEvent(RoomCreated event);
 }

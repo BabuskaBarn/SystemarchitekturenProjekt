@@ -15,7 +15,7 @@ import java.util.List;
 
 import static io.quarkus.arc.ComponentsProvider.LOG;
 
-@Path("/api")
+@Path("/api/query")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class CustomerQueryController {
