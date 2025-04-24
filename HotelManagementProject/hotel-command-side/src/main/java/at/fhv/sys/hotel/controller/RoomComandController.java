@@ -53,7 +53,7 @@ public class RoomComandController {
         }
     }
 
-    @GET
+    /*@GET
     @Path("/free")
     public Response getFreeRooms(
             @QueryParam("from") @DefaultValue("2023-01-01") LocalDate fromDate,
@@ -62,4 +62,6 @@ public class RoomComandController {
         List<RoomQueryModel> freeRooms = RoomService.getFreeRooms(fromDate, toDate);
         return Response.ok(freeRooms).build();
     }
+
+     */
 }

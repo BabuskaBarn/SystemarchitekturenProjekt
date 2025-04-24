@@ -18,6 +18,8 @@ import jakarta.ws.rs.core.Response;
 import org.jboss.logmanager.Logger;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @Path("/api/query")
@@ -30,9 +32,10 @@ public class RoomQueryController {
     @Inject
     RoomService roomService;
 
-    public RoomQueryController(){
+    public RoomQueryController() {
 
     }
+
     @POST
     @Path("/roomCreated")
     public Response roomCreated(RoomCreated event) {
@@ -44,10 +47,25 @@ public class RoomQueryController {
     @GET
     @Path("/free")
     public Response getFreeRooms(
-            @QueryParam("from") @DefaultValue("2023-01-01") LocalDate fromDate,
-            @QueryParam("to") @DefaultValue("2023-12-31") LocalDate toDate
+            @QueryParam("from") @DefaultValue("2023-01-01T00:00:00") String fromDateStr,
+            @QueryParam("to") @DefaultValue("2023-12-31T23:59:59") String toDateStr
     ) {
-        List<RoomQueryModel> freeRooms = roomService.getFreeRooms(fromDate, toDate);
-        return Response.ok(freeRooms).build();
+        try {
+            LocalDateTime fromDate = LocalDateTime.parse(fromDateStr);
+            LocalDateTime toDate = LocalDateTime.parse(toDateStr);
+
+            if (fromDate.isAfter(toDate)) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("Invalid date range: 'from' date must be before 'to' date")
+                        .build();
+            }
+
+            List<RoomQueryModel> freeRooms = roomService.getFreeRooms(fromDate, toDate);
+            return Response.ok(freeRooms).build();
+        } catch (DateTimeParseException e) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("Invalid date format. Please use ISO-8601 format (e.g., 2023-01-01T00:00:00)")
+                    .build();
+        }
     }
 }

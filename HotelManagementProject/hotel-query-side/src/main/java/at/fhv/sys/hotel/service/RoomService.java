@@ -10,12 +10,14 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 @ApplicationScoped
 public class RoomService {
-    @PersistenceContext
-    static EntityManager entityManager;
+    @Inject
+    EntityManager entityManager;
 
     public List<RoomQueryModel> getAllRooms(){
         return entityManager.createQuery("SELECT c FROM RoomQueryModel c", RoomQueryModel.class).getResultList();
@@ -27,27 +29,29 @@ public class RoomService {
 
 
     @Transactional
-    public static List<RoomQueryModel> getFreeRooms(LocalDate fromDate, LocalDate toDate) {
-        // für gebuchte Zimmer im Zeitraum
+    public List<RoomQueryModel> getFreeRooms(LocalDateTime fromDate, LocalDateTime toDate) {
+        // 1. Find all room numbers that are booked in the given time period
         String jpqlBookedRooms = """
-        SELECT b.roomNumber FROM BookingQueryModel b
-        WHERE (b.fromDate <= :toDate AND b.toDate >= :fromDate)
-        AND b.state = 'OPEN'
-        """;
+            SELECT DISTINCT b.roomNumber 
+            FROM BookingQueryModel b
+            WHERE (b.fromDate <= :toDate AND b.toDate >= :fromDate)
+            AND b.state = 'OPEN'
+            """;
 
         List<Integer> bookedRoomNumbers = entityManager.createQuery(jpqlBookedRooms, Integer.class)
-                .setParameter("fromDate", fromDate.atStartOfDay())
-                .setParameter("toDate", toDate.atTime(23, 59, 59))
+                .setParameter("fromDate", fromDate)
+                .setParameter("toDate", toDate)
                 .getResultList();
 
-        // für freie Zimmer
+        // 2. Get all rooms whose numbers are NOT in the booked rooms list
         String jpqlFreeRooms = """
-        SELECT r FROM RoomQueryModel r
-        WHERE r.roomNumber NOT IN :bookedRoomNumbers
-        """;
+            SELECT r 
+            FROM RoomQueryModel r
+            WHERE r.roomNumber NOT IN :bookedRoomNumbers
+            """;
 
         return entityManager.createQuery(jpqlFreeRooms, RoomQueryModel.class)
-                .setParameter("bookedRoomNumbers", bookedRoomNumbers.isEmpty() ? List.of(-1) : bookedRoomNumbers)
+                .setParameter("bookedRoomNumbers", bookedRoomNumbers.isEmpty() ? Collections.emptyList() : bookedRoomNumbers)
                 .getResultList();
     }
 
