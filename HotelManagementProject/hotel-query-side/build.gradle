@@ -21,11 +21,14 @@ dependencies {
     implementation 'io.quarkiverse.logging.logback:quarkus-logging-logback:1.1.2'
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
+    implementation("com.eventstore:db-client-java:4.1.0")
     implementation project(':share-events')
     implementation 'io.quarkus:quarkus-smallrye-openapi'
-    implementation("com.eventstore:db-client-java:4.1.0")
+    implementation('com.eventstore:db-client-java:4.1.0')
     implementation 'com.h2database:h2:2.2.220'
     implementation 'io.quarkus:quarkus-jdbc-h2'
+
+
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.0'
 }
 

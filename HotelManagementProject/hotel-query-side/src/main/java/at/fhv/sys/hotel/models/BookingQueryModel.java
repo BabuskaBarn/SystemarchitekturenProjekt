@@ -2,6 +2,10 @@ package at.fhv.sys.hotel.models;
 
 import at.fhv.sys.hotel.commands.shared.events.BookingCreated;
 import at.fhv.sys.hotel.commands.shared.events.Enums.BookingState;
+import at.fhv.sys.hotel.commands.shared.events.Enums.PaymentOptions;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import at.fhv.sys.hotel.commands.shared.events.Enums.BookingState;
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -27,13 +31,20 @@ public class BookingQueryModel {
 
 
 
+    private BookingState state;
+    private PaymentOptions paymentOptions;
+
+
+
+
     public BookingQueryModel(Long bookingId, LocalDateTime fromDate, LocalDateTime toDate, int numberOfPersons, int roomNumber){
         this.bookingId=bookingId;
         this.fromDate=fromDate;
         this.toDate=toDate;
         this.numberOfPersons=numberOfPersons;
         this.roomNumber=roomNumber;
-        this.state = BookingState.Open;
+        this.state=BookingState.Open;
+        this.paymentOptions = PaymentOptions.Card;
     }
 
     public BookingQueryModel() {
@@ -85,5 +96,13 @@ public class BookingQueryModel {
 
     public void setState(BookingState state) {
         this.state = state;
+    }
+
+    public PaymentOptions getPaymentOptions() {
+        return paymentOptions;
+    }
+
+    public void setPaymentOptions(PaymentOptions paymentOptions) {
+        this.paymentOptions = paymentOptions;
     }
 }

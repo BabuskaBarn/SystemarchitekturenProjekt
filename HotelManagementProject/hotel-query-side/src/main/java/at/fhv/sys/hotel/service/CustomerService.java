@@ -23,4 +23,28 @@ public class CustomerService {
     public void createCustomer(CustomerQueryModel customer) {
         entityManager.persist(customer);
     }
+
+    @Transactional
+    public void updateCustomer(CustomerQueryModel updatedCustomer) {
+
+        CustomerQueryModel existingCustomer = entityManager.find(CustomerQueryModel.class, updatedCustomer.getUserId());
+
+        // Felder aktualisieren
+        if (existingCustomer != null) {
+            existingCustomer.setEmail(updatedCustomer.getEmail());
+            existingCustomer.setUserAddress(updatedCustomer.getUserAddress());
+        } else {
+            throw new IllegalArgumentException("Customer not found with ID: " + updatedCustomer.getUserId());
+        }
+    }
+
+    public CustomerQueryModel findCustomerById(Long customerId) {
+        CustomerQueryModel customer = entityManager.find(CustomerQueryModel.class, customerId);
+
+        if (customer == null) {
+            throw new IllegalArgumentException("Customer not found with ID: " + customerId);
+        }
+
+        return customer;
+    }
 }

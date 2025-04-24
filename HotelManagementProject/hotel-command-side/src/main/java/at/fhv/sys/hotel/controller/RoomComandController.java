@@ -3,11 +3,15 @@ package at.fhv.sys.hotel.controller;
 
 import at.fhv.sys.hotel.commands.CreateRoomCommand;
 import at.fhv.sys.hotel.commands.RoomAggregate;
+import at.fhv.sys.hotel.models.RoomQueryModel;
+import at.fhv.sys.hotel.service.RoomService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Path("/api/commands")
@@ -47,5 +51,15 @@ public class RoomComandController {
                     .entity("Failed to create room: " + e.getMessage())
                     .build();
         }
+    }
+
+    @GET
+    @Path("/free")
+    public Response getFreeRooms(
+            @QueryParam("from") @DefaultValue("2023-01-01") LocalDate fromDate,
+            @QueryParam("to") @DefaultValue("2023-12-31") LocalDate toDate
+    ) {
+        List<RoomQueryModel> freeRooms = RoomService.getFreeRooms(fromDate, toDate);
+        return Response.ok(freeRooms).build();
     }
 }

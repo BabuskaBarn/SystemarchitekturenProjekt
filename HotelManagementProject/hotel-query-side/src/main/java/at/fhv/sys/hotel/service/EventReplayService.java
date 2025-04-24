@@ -95,8 +95,12 @@ import at.fhv.sys.hotel.commands.shared.events.RoomCreated;
 import at.fhv.sys.hotel.projection.BookingProjection;
 import at.fhv.sys.hotel.projection.CustomerProjection;
 import at.fhv.sys.hotel.projection.RoomProjection;
-
-import com.eventstore.dbclient.*;
+import com.eventstore.dbclient.EventStoreDBClient;
+import com.eventstore.dbclient.EventStoreDBClientSettings;
+import com.eventstore.dbclient.EventStoreDBConnectionString;
+import com.eventstore.dbclient.ReadAllOptions;
+import com.eventstore.dbclient.ReadResult;
+import com.eventstore.dbclient.ResolvedEvent;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

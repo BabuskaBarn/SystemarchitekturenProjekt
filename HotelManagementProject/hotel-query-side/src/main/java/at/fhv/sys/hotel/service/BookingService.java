@@ -1,5 +1,8 @@
 package at.fhv.sys.hotel.service;
 
+import at.fhv.sys.hotel.commands.shared.events.BookingPaid;
+import at.fhv.sys.hotel.commands.shared.events.Enums.BookingState;
+import at.fhv.sys.hotel.commands.shared.events.Enums.PaymentOptions;
 import at.fhv.sys.hotel.models.BookingQueryModel;
 import at.fhv.sys.hotel.models.CustomerQueryModel;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -39,5 +42,22 @@ public class BookingService {
             LOG.severe("Error updating booking: " + e.getMessage());
             throw new RuntimeException("Failed to update booking", e);
         }
+    }
+
+    @Transactional
+    public void updateBookingPayment(Long bookingId, PaymentOptions paymentMethod, double amount) {
+        BookingQueryModel booking = entityManager.find(BookingQueryModel.class, bookingId);
+
+        if (booking == null) {
+            throw new IllegalArgumentException("Booking nicht gefunden: " + bookingId);
+        }
+        if (booking.getState() != BookingState.Open) {
+            throw new IllegalStateException("Buchung ist bereits bezahlt/storniert");
+        }
+
+        booking.setState(BookingState.Paid);
+        booking.setPaymentOptions(paymentMethod);
+
+        entityManager.merge(booking);
     }
 }

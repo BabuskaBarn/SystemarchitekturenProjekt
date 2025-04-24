@@ -2,12 +2,11 @@ package at.fhv.sys.hotel.commands;
 
 import at.fhv.sys.hotel.client.EventBusClient;
 import at.fhv.sys.hotel.commands.shared.events.CustomerCreated;
+import at.fhv.sys.hotel.commands.shared.events.CustomerUpdated;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-
-import java.util.logging.Logger;
 
 import static io.quarkus.arc.ComponentsProvider.LOG;
 
@@ -41,5 +40,9 @@ public String handle(CreateCustomerCommand command) {
         throw new RuntimeException("Customer creation failed", e);
     }
 }
+
+    public static CustomerUpdated updateCustomer(UpdateCustomerCommand command) {
+        return new CustomerUpdated(command.getCustomerId(), command.getEmail(),command.getAddress());
+    }
 
 }

@@ -8,7 +8,6 @@ repositories {
     mavenLocal()
 }
 
-
 dependencies {
     implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
     implementation 'io.quarkus:quarkus-rest'
@@ -20,8 +19,7 @@ dependencies {
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
     implementation project(':share-events')
-    implementation project("hotel-query-side")
-    implementation 'io.quarkus:quarkus-smallrye-openapi'
+    implementation project(':hotel-query-side')
     implementation("com.eventstore:db-client-java:4.1.0")
     implementation 'com.h2database:h2:2.2.220'
     implementation 'io.quarkus:quarkus-jdbc-h2'
@@ -32,12 +30,6 @@ group 'at.fhv.sys'
 version '1.0-SNAPSHOT'
 
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-        vendor = JvmVendorSpec.ADOPTIUM
-        // Alternative Pfadangabe:
-        // implementationClasspath = file("C:/Program Files/Java/jdk-17.0.8")
-    }
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 }

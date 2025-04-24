@@ -7,13 +7,19 @@ import at.fhv.sys.hotel.commands.shared.events.RoomCreated;
 import at.fhv.sys.hotel.projection.BookingProjection;
 import at.fhv.sys.hotel.projection.CustomerProjection;
 import at.fhv.sys.hotel.projection.RoomProjection;
-import com.eventstore.dbclient.*;
+import com.eventstore.dbclient.EventStoreDBClient;
+import com.eventstore.dbclient.EventStoreDBClientSettings;
+import com.eventstore.dbclient.EventStoreDBConnectionString;
+import com.eventstore.dbclient.ReadAllOptions;
+import com.eventstore.dbclient.ReadResult;
+import com.eventstore.dbclient.ResolvedEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+
 
 import java.nio.charset.StandardCharsets;
 
@@ -22,7 +28,6 @@ public class EventReplayService {
 
     @Inject
     CustomerProjection customerProjection;
-
     @Inject
     RoomProjection roomProjection;
     @Inject
@@ -177,47 +182,3 @@ public class EventReplayService {
                 for (ResolvedEvent event : events) {
                     processEvent(event);
                 }
-
-                // Get position from last event
-                position = events.get(events.size()-1).getOriginalEvent().getPosition();
-
-                LOG.infof("Processed %d events, new position: %s",
-                        events.size(), position);
-            }
-        } catch (Exception e) {
-            LOG.error("Event replay failed", e);
-            throw new RuntimeException("Event replay failed", e);
-        }
-    }
-
-    @Transactional
-    public void processEvent(ResolvedEvent event) {
-        String eventType = event.getOriginalEvent().getEventType();
-        String eventData = new String(event.getOriginalEvent().getEventData(), StandardCharsets.UTF_8);
-        LOG.infof("Processing event: %s", eventType);
-
-        try {
-            switch (eventType) {
-                case "CustomerCreated":
-                    CustomerCreated customer = objectMapper.readValue(eventData, CustomerCreated.class);
-                    customerProjection.processCustomerCreatedEvent(customer);
-                    break;
-                case "RoomCreated":
-                    RoomCreated room = objectMapper.readValue(eventData, RoomCreated.class);
-                    roomProjection.processRoomCreatedEvent(room);
-                    break;
-                case "BookingCreated":
-                    BookingCreated booking = objectMapper.readValue(eventData, BookingCreated.class);
-                    bookingProjection.processBookingCreatedEvent(booking);
-                    break;
-                default:
-                    LOG.warnf("Unknown event type: %s", eventType);
-            }
-        } catch (Exception e) {
-            LOG.errorf("Failed to process event %s: %s", eventType, e.getMessage());
-            throw new RuntimeException("Event processing failed", e);
-        }
-    }
-}
-
- */

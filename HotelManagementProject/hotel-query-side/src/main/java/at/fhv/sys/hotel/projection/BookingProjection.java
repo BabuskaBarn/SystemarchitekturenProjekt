@@ -2,6 +2,7 @@ package at.fhv.sys.hotel.projection;
 
 import at.fhv.sys.hotel.commands.shared.events.BookingCancelled;
 import at.fhv.sys.hotel.commands.shared.events.BookingCreated;
+import at.fhv.sys.hotel.commands.shared.events.BookingPaid;
 import at.fhv.sys.hotel.models.BookingQueryModel;
 import at.fhv.sys.hotel.models.BookingQueryPanacheModel;
 import at.fhv.sys.hotel.service.BookingService;
