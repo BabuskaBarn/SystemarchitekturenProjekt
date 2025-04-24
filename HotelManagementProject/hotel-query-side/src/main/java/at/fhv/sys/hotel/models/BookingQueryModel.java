@@ -27,11 +27,6 @@ public class BookingQueryModel {
     private int roomNumber;
     @Enumerated(EnumType.STRING) // Stores the enum as a string in DB
     private BookingState state = BookingState.Open; // Default value
-
-
-
-
-    private BookingState state;
     private PaymentOptions paymentOptions;
 
 
