@@ -1,14 +1,18 @@
 package at.fhv.sys.hotel.commands.shared.events;
 
 import at.fhv.sys.hotel.commands.shared.events.Enums.BookingState;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
 
 public class BookingCreated {
     private Long bookingId;
+
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime fromDate;
 
-    //@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime toDate;
 
     private int numberOfPersons;

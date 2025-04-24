@@ -25,6 +25,7 @@ dependencies {
     implementation("com.eventstore:db-client-java:4.1.0")
     implementation 'com.h2database:h2:2.2.220'
     implementation 'io.quarkus:quarkus-jdbc-h2'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.0'
 }
 
 group 'at.fhv.sys'

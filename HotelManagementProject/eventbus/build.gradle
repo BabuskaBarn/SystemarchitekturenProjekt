@@ -26,6 +26,7 @@ dependencies {
     implementation project(':share-events')
     implementation("com.eventstore:db-client-java:4.1.0")
     implementation 'io.quarkus:quarkus-smallrye-openapi'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
 }
 

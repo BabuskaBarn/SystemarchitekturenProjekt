@@ -4,6 +4,8 @@ import at.fhv.sys.eventbus.Exceptions.EventStoreOperationException;
 import com.eventstore.dbclient.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.jboss.logging.Logger;
 
@@ -17,22 +19,26 @@ public class EventStoreService {
     private static final Logger LOG = Logger.getLogger(EventStoreService.class);
 
     private final EventStoreDBClient client;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     public EventStoreService() {
         // Direct initialization without config class
         Endpoint endpoint = new Endpoint("localhost", 2113);
-
-        // Build settings with proper Endpoint usage
         EventStoreDBClientSettings settings = EventStoreDBClientSettings.builder()
-                .addHost(endpoint)  // Now using Endpoint object
+                .addHost(endpoint)
                 .tls(false)
                 .defaultCredentials("admin", "changeit")
                 .buildConnectionSettings();
-
         this.client = EventStoreDBClient.create(settings);
 
+        // ObjectMapper mit Java 8 Date/Time Support konfigurieren
+        this.objectMapper = new ObjectMapper();
+        this.objectMapper.registerModule(new JavaTimeModule());
+        this.objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     }
+
+
+
 
     public void storeEvent(String streamName, Object event) throws EventStoreOperationException {
         try {

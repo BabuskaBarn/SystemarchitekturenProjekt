@@ -45,6 +45,9 @@ public class EventProcessingService {
                 queryClient.forwardCustomerCreatedEvent(evt);
             } else if (event instanceof RoomCreated evt) {
                 queryClient.forwardRoomCreatedEvent(evt);
+            }else if (event instanceof BookingCreated evt) {
+                queryClient.forwardBookingCreatedEvent(evt);
+
             }
             // Add other event types as needed
         } catch (Exception e) {

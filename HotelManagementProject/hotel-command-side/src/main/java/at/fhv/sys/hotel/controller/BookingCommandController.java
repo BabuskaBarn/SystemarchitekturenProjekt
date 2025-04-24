@@ -6,6 +6,7 @@ import at.fhv.sys.hotel.commands.CreateBookingCommand;
 import at.fhv.sys.hotel.commands.CreateCustomerCommand;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
@@ -13,6 +14,9 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.logging.annotations.Pos;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.UUID;
 
 @Path("/api/commands")
 @Produces(MediaType.APPLICATION_JSON)
@@ -26,7 +30,7 @@ public class BookingCommandController {
     }
 
     @POST
-    @Path("/createBooking")
+    @Path("/bookingCreated")
     @Operation(
             summary = "Create a new booking",
             description = "Creates a new hotel booking with the provided booking details."
@@ -35,8 +39,46 @@ public class BookingCommandController {
             @APIResponse(responseCode = "200", description = "Booking created successfully"),
             @APIResponse(responseCode = "400", description = "Invalid input")
     })
-    public String createBooking(CreateBookingCommand command) {
-        return bookingAggregate.handle(command);
+    public Response createBooking(
+            @QueryParam("fromDate") String fromDateStr,
+            @QueryParam("toDate") String toDateStr,
+            @QueryParam("numberOfPersons") int numberOfPersons,
+            @QueryParam("roomNumber") int roomNumber) {
+
+        try {
+            // Parse date strings
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+            LocalDateTime fromDate = LocalDateTime.parse(fromDateStr, formatter);
+            LocalDateTime toDate = LocalDateTime.parse(toDateStr, formatter);
+
+            // Automatische ID-Generierung
+            Long bookingId = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
+
+            CreateBookingCommand command = CreateBookingCommand.of(
+                    bookingId,
+                    fromDate,
+                    toDate,
+                    numberOfPersons,
+                    roomNumber
+            );
+
+            String result = bookingAggregate.handle(command);
+
+            return Response.ok()
+                    .entity("Booking created with ID: " + bookingId +
+                            ", Room: " + roomNumber +
+                            ", Dates: " + fromDateStr + " to " + toDateStr)
+                    .build();
+
+        } catch (DateTimeParseException e) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("Invalid date format. Please use yyyy-MM-dd'T'HH:mm:ss")
+                    .build();
+        } catch (Exception e) {
+            return Response.serverError()
+                    .entity("Failed to create booking: " + e.getMessage())
+                    .build();
+        }
     }
 
 

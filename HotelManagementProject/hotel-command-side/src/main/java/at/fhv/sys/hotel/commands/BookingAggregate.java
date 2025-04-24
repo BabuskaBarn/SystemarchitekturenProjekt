@@ -11,30 +11,49 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import java.util.logging.Logger;
 
+import static io.quarkus.arc.ComponentsProvider.LOG;
+
 @ApplicationScoped
 public class BookingAggregate {
     @Inject
     @RestClient
     EventBusClient eventClient;
-     public String handle(CreateBookingCommand command) {
-         BookingCreated event= new BookingCreated(command.bookingId(), command.fromDate(),command.toDate(),command.numberOfPersons(), command.roomNumber());
 
+    public String handle(CreateBookingCommand command) {
+        try {
+            // 1. Event erstellen
+            BookingCreated event = new BookingCreated(
+                    command.bookingId(),
+                    command.fromDate(),
+                    command.toDate(),
+                    command.numberOfPersons(),
+                    command.roomNumber()
+            );
 
-         Logger.getAnonymousLogger().info(eventClient.processBookingCreatedEvent(event).toString());
-         //wir geben dem command einen Long dieser erwartet aber einen String;
-         return String.valueOf(command.bookingId());
-     }
+            // 2. Event an Event Bus senden
+            BookingCreated response = eventClient.processBookingCreatedEvent(event);
+            LOG.info("Booking event successfully processed: " + response);
 
-    public String handle(CancelBookingCommand command) {
-        // Buchungsstornierung verarbeiten
-        Logger.getAnonymousLogger().info("Processing cancel booking: " + command.bookingId());
+            // 3. Bestätigung zurückgeben
+            return command.bookingId().toString();
 
-        // BookingCancelled Event erzeugen
-        BookingCancelled event = new BookingCancelled(command.bookingId());
-
-        // Event an EventBusClient schicken
-        eventClient.processBookingCancelledEvent(event);
-
-        return String.valueOf(command.bookingId());
+        } catch (Exception e) {
+            LOG.error("Failed to process booking creation", e);
+            throw new RuntimeException("Booking creation failed", e);
+        }
     }
-}
+
+        public String handle (CancelBookingCommand command){
+            // Buchungsstornierung verarbeiten
+            Logger.getAnonymousLogger().info("Processing cancel booking: " + command.bookingId());
+
+            // BookingCancelled Event erzeugen
+            BookingCancelled event = new BookingCancelled(command.bookingId());
+
+            // Event an EventBusClient schicken
+            eventClient.processBookingCancelledEvent(event);
+
+            return String.valueOf(command.bookingId());
+        }
+    }
+
